@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SellerMainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeSeller"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/login_rectangle_orange"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <TextView
+            android:id="@+id/textViewSellerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:fontFamily="@font/roboto"
+            android:text="Name"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <ImageButton
+            android:id="@+id/imgBtnLogOut"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="17dp"
+            android:background="@null"
+            android:src="@drawable/ic_logout"
+            app:tint="#FA0202" />
+
+        <ImageButton
+            android:id="@+id/imgBtnEdit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            android:layout_toStartOf="@id/imgBtnLogOut"
+            android:background="@null"
+            android:src="@drawable/ic_edit"
+            />
+
+
+        <ImageButton
+            android:id="@+id/imgBtnAddItem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            android:layout_toStartOf="@id/imgBtnEdit"
+            android:background="@null"
+            android:src="@drawable/ic_add_item"
+            />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

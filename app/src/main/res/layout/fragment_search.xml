@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.SearchFragment"
+    android:background="@drawable/view_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/back_img11"
+         />
+
+    <EditText
+        android:id="@+id/searchEt"
+        android:layout_width="370dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/rec_gray"
+        android:drawableStart="@drawable/ic_search_24"
+        android:drawablePadding="5dp"
+        android:hint="Search here"
+        android:paddingLeft="15dp"
+        android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+    <View
+        android:id="@+id/view5"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/searchEt"
+        android:background="@drawable/back_rec_round" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchEt"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal" />
+
+
+</RelativeLayout>

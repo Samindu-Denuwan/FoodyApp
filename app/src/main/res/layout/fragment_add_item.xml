@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F6F9"
+    tools:context=".seller.AddItem.AddItemFragment">
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+      <RelativeLayout
+          android:id="@+id/ralativeL"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+         <TextView
+             android:id="@+id/textView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentTop="true"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="80dp"
+             android:text="@string/addFoodItem"
+             android:textAlignment="center"
+             android:textAllCaps="false"
+             android:textColor="@color/orange"
+             android:textSize="25sp"
+             android:textStyle="bold" />
+
+         <ImageView
+             android:id="@+id/itemImageBtn"
+             android:layout_width="150dp"
+             android:layout_height="150dp"
+             android:layout_below="@+id/textView"
+             android:layout_alignParentStart="true"
+             android:layout_alignParentEnd="true"
+             android:layout_marginStart="120dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginEnd="120dp" />
+
+         <EditText
+             android:id="@+id/itemNameET"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/itemImageBtn"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="15dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_title"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:hint="Name"
+             android:inputType="textPersonName|textCapWords"
+             android:paddingLeft="15dp" />
+
+         <EditText
+             android:id="@+id/itemDescET"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/itemNameET"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="15dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_title"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:hint="Description"
+             android:inputType="textPersonName|textMultiLine"
+             android:paddingLeft="15dp" />
+
+
+         <TextView
+             android:id="@+id/categoryTv"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/itemDescET"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="15dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_category"
+             android:drawableRight="@drawable/ic_down"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:gravity="center_vertical"
+             android:hint="Category"
+             android:paddingLeft="15dp"
+             android:paddingRight="10dp"
+             android:textAllCaps="false"
+             android:textSize="18sp" />
+
+         <EditText
+             android:id="@+id/itemPriceET"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/categoryTv"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="15dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_price"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:hint="Price (LKR)"
+             android:inputType="numberDecimal"
+             android:paddingLeft="15dp" />
+
+         <androidx.appcompat.widget.SwitchCompat
+             android:id="@+id/discountSwitch"
+             android:layout_width="350dp"
+             android:layout_height="wrap_content"
+             android:layout_below="@+id/itemPriceET"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="5dp"
+             android:textColor="@color/black"
+             android:padding="10dp"
+             android:text="Discount"
+             android:textSize="16sp" />
+
+         <EditText
+             android:id="@+id/itemDiscountPriceET"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/discountSwitch"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="10dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_price"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:hint="Discount (LKR)"
+             android:inputType="numberDecimal"
+             android:paddingLeft="15dp" />
+
+         <EditText
+             android:id="@+id/itemDiscountNoteET"
+             android:layout_width="350dp"
+             android:layout_height="48dp"
+             android:layout_below="@+id/itemDiscountPriceET"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="15dp"
+             android:background="@drawable/text_box_round"
+             android:drawableLeft="@drawable/ic_title"
+             android:drawablePadding="10dp"
+             android:ems="10"
+             android:hint="Discount Note"
+             android:inputType="textPersonName|textMultiLine"
+             android:paddingLeft="15dp" />
+
+         <Button
+       android:id="@+id/btnSaveCate"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/itemDiscountNoteET"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentEnd="true"
+       android:layout_marginStart="99dp"
+       android:layout_marginTop="15dp"
+       android:layout_marginEnd="99dp"
+       android:background="@drawable/btn_round"
+       android:fontFamily="@font/roboto"
+       android:text="save"
+       android:textColor="@color/white"
+       android:textSize="20sp" />
+
+      </RelativeLayout>
+
+   </ScrollView>
+
+
+</RelativeLayout>

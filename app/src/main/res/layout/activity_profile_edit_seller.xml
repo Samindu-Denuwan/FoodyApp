@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileEditSellerActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/login_rectangle_orange"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewSeller"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <TextView
+            android:id="@+id/textViewEditProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:fontFamily="@font/roboto"
+            android:text="Edit Profile"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imgBtnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@null"
+            android:paddingLeft="15dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/imgBtnGetGps"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="17dp"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_gps_fixed_24" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageViewSeller"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeEditProfile" />
+
+    <ScrollView
+        android:id="@+id/scrollViewSeller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSeller">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchShopOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextAddressSR"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="5dp"
+                android:text="Shop Open"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+            <Button
+                android:id="@+id/buttonEditProfileSeller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/switchShopOpen"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="99dp"
+                android:background="@drawable/btn_round"
+                android:fontFamily="@font/roboto"
+                android:text="Update"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextAddressSR"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/editTextShopSR"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/text_box_round"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Address"
+                android:inputType="textPostalAddress|textMultiLine"
+                android:paddingLeft="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextShopSR" />
+
+            <EditText
+                android:id="@+id/editTextShopSR"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_below="@+id/editTextPhoneNumSR"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/text_box_round"
+                android:drawableLeft="@drawable/ic_baseline_store_24"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Shop Name"
+                android:inputType="textPersonName|textCapWords"
+                android:paddingLeft="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumSR" />
+
+            <EditText
+                android:id="@+id/editTextFullNameSR"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/text_box_round"
+                android:drawableLeft="@drawable/ic_fullname"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Full Name"
+                android:inputType="textPersonName|textCapWords"
+                android:paddingLeft="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextPhoneNumSR"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/editTextFullNameSR"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/text_box_round"
+                android:drawableLeft="@drawable/ic_contact"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:paddingLeft="15dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/editProfile_anim"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/profile" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

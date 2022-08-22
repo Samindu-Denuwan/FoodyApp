@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single" android:id="@+id/group_main">
+        <item
+            android:id="@+id/menu_home_Seller"
+            android:title="@string/home"
+            android:icon="@drawable/ic_home"
+            android:iconTint="@color/gray"
+            />
+        <item
+            android:id="@+id/menu_foodItem_Seller"
+            android:title="@string/foodItem"
+            android:icon="@drawable/ic_food"
+            android:iconTint="@color/gray"
+            />
+        <item
+            android:id="@+id/menu_dashboardImg_Seller"
+            android:title="@string/dashboardImg"
+            android:icon="@drawable/ic_dashboard"
+            android:iconTint="@color/gray"
+            />
+        <item
+            android:id="@+id/menu_promotions_Seller"
+            android:title="@string/promotion"
+            android:icon="@drawable/ic_promotion"
+            android:iconTint="@color/gray"
+            />
+        <item
+            android:id="@+id/menu_profile_Seller"
+            android:title="@string/profile"
+            android:icon="@drawable/ic_user"
+            android:iconTint="@color/gray"
+            />
+    </group>
+
+
+    <group android:checkableBehavior="single" android:id="@+id/group_auth">
+        <item
+            android:id="@+id/menu_logout_Seller"
+            android:title="@string/logout"
+            android:icon="@drawable/ic_logout_new"
+            android:iconTint="@color/gray"
+            />
+    </group>
+
+</menu>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".seller.food_item.FoodItemFragment"
+    android:background="#FFFFFF">
+
+
+        <Button
+            android:id="@+id/btnAddCategory"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/item_add"
+            android:text="Add Item Category"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnAddItem"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_below="@+id/btnAddCategory"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/item_add"
+            android:text="Add Items"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddCategory" />
+
+        <Button
+            android:id="@+id/btnViewItem"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_below="@+id/btnAddItem"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/item_add"
+            android:text="View All Items"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddItem" />
+
+        <Button
+            android:id="@+id/btnUpdateItem"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_below="@+id/btnViewItem"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/item_add"
+            android:text="Update Items"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/btnViewItem" />
+
+
+
+</RelativeLayout>
