@@ -38,6 +38,7 @@ import com.jiat.foodyapp.home.HomeFragment;
 import com.jiat.foodyapp.oders.OrderUserFragment;
 import com.jiat.foodyapp.profile.ProfileFragment;
 import com.jiat.foodyapp.search.SearchFragment;
+import com.jiat.foodyapp.settings.SettingsUserFragment;
 
 import java.util.HashMap;
 
@@ -91,6 +92,7 @@ public class UserNaviActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
+        getSupportActionBar().setTitle("Home");
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -102,29 +104,40 @@ public class UserNaviActivity extends AppCompatActivity {
                 {
                     case R.id.menu_home:
                        fragment = new HomeFragment();
-                       loadFragment(fragment);
+                       loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Home");
                         break;
 
                     case R.id.menu_fav:
                         fragment = new FavouriteFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Favourite");
                         break;
 
                     case R.id.menu_cart:
                         fragment = new CartFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Cart");
                         break;
 
                     case R.id.menu_orders:
                         fragment = new OrderUserFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Orders");
                         /*Intent intent = new Intent(UserNaviActivity.this, UserOrderActivity.class);
                         startActivity(intent);*/
                         break;
 
                     case R.id.menu_profile:
                         fragment = new ProfileFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Profile");
+                        break;
+
+                    case R.id.menu_settings:
+                        fragment = new SettingsUserFragment();
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Settings");
                         break;
 
                     case R.id.menu_logout:
@@ -165,27 +178,32 @@ public class UserNaviActivity extends AppCompatActivity {
                     case ID_HOME:
                         fragment = new HomeFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Home");
                         break;
 
                     case ID_FAVOURITE:
                         fragment = new FavouriteFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Favourite");
                         break;
 
                     case ID_SEARCH:
                         fragment = new SearchFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Search");
                         break;
 
                     case ID_CART:
                         fragment = new CartFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Cart");
 
                         break;
 
                     case ID_ACCOUNT:
                         fragment = new ProfileFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Profile");
 
                         break;
 
@@ -239,27 +257,32 @@ public class UserNaviActivity extends AppCompatActivity {
                     case ID_HOME:
                         fragment = new HomeFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Home");
                         break;
 
                     case ID_FAVOURITE:
                         fragment = new FavouriteFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Favourite");
                         break;
 
                     case ID_SEARCH:
                         fragment = new SearchFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Search");
                         break;
 
                     case ID_CART:
                         fragment = new CartFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Cart");
 
                         break;
 
                     case ID_ACCOUNT:
                         fragment = new ProfileFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Profile");
 
                         break;
 
@@ -270,12 +293,20 @@ public class UserNaviActivity extends AppCompatActivity {
         });
     }
 
+    private void loadFragment_side(Fragment fragment) {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
     private void loadFragment(Fragment fragment) {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment);
         fragmentTransaction.commit();
-        /*drawerLayout.closeDrawer(GravityCompat.START);*/
+
 
     }
 

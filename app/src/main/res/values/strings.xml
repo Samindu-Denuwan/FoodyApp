@@ -25,6 +25,7 @@
     <string name="ViewAllItem">View All Item</string>
     <string name="updateFodd">Update Food Items</string>
     <string name="ViewAvailableItem">View Available Items</string>
+    <string name="settings">Settings</string>
 
 
 </resources>

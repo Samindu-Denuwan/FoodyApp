@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/toolBar"
+            app:titleTextColor="@color/orange"
             android:background="@color/BackgroundColor"
             app:popupTheme="@style/Theme.FoodyApp.popUpOverlay"
             app:layout_scrollFlags="scroll|enterAlways"

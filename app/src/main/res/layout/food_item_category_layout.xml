@@ -29,8 +29,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="100dp"
@@ -47,10 +45,11 @@
 
             <ImageView
                 android:id="@+id/category_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
+                android:background="@drawable/default_img"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

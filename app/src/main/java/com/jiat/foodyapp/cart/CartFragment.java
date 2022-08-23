@@ -113,6 +113,8 @@ public class CartFragment extends Fragment implements LocationListener {
         noCartTv.setVisibility(View.GONE);
         noCartImg.setVisibility(View.GONE);
 
+
+
         /*if(subTotalTv.getText().equals("LKR "+0)){
             noCartTv.setVisibility(View.VISIBLE);
             noCartImg.setVisibility(View.VISIBLE);

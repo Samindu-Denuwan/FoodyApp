@@ -31,6 +31,13 @@
             android:icon="@drawable/ic_user"
             android:iconTint="@color/gray"
             />
+
+        <item
+            android:id="@+id/menu_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:iconTint="@color/gray"
+            />
     </group>
 
 
@@ -39,7 +46,7 @@
                 android:id="@+id/menu_logout"
                 android:title="@string/logout"
                 android:icon="@drawable/ic_logout_new"
-                android:iconTint="@color/gray"
+                android:iconTint="@color/red"
                 />
         </group>
 

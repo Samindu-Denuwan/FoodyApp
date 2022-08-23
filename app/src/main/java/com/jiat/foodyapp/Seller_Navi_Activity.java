@@ -92,6 +92,7 @@ public class Seller_Navi_Activity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view_seller);
+        getSupportActionBar().setTitle("Home");
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -102,28 +103,35 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                 {
                     case R.id.menu_home_Seller:
                         fragment = new SellerHomeFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Home");
+
                         break;
 
                     case R.id.menu_foodItem_Seller:
                         fragment = new FoodItemFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Food Items");
                         Log.i(TAG, "Food Item fragment Loaded");
+
                         break;
 
                     case R.id.menu_dashboardImg_Seller:
                         fragment = new DashImgFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("DashBoard Images");
                         break;
 
                     case R.id.menu_promotions_Seller:
                         fragment = new PromotionFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Promotions");
                         break;
 
                     case R.id.menu_profile_Seller:
                         fragment = new SellerProfileFragment();
-                        loadFragment(fragment);
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Profile");
                         break;
 
                     case R.id.menu_logout_Seller:
@@ -166,6 +174,7 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                     case ID_HOME:
                         fragment = new SellerHomeFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Home");
                         break;
 
 
@@ -173,11 +182,13 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                     case ID_ORDERS:
                         fragment = new SellerOrdersFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Orders");
                         break;
 
                     case ID_ACCOUNT:
                         fragment = new SellerProfileFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Profile");
 
                         break;
 
@@ -230,6 +241,7 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                     case ID_HOME:
                         fragment = new SellerHomeFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Home");
                         break;
 
 
@@ -237,11 +249,13 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                     case ID_ORDERS:
                         fragment = new SellerOrdersFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Orders");
                         break;
 
                     case ID_ACCOUNT:
                         fragment = new SellerProfileFragment();
                         loadFragment(fragment);
+                        getSupportActionBar().setTitle("Profile");
 
                         break;
 
@@ -252,13 +266,21 @@ public class Seller_Navi_Activity extends AppCompatActivity {
         });
     }
 
+    private void loadFragment_side(Fragment fragment) {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.containerSeller, fragment);
+        fragmentTransaction.commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
     private void loadFragment(Fragment fragment) {
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.containerSeller, fragment);
         fragmentTransaction.commit();
-        //drawerLayout.closeDrawer(GravityCompat.START);
+
 
     }
 
