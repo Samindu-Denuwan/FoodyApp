@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodyApp">
         <activity
+            android:name=".OrderDetailsSellerActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrderDetailsUserActivity"
             android:exported="false" />
         <activity
