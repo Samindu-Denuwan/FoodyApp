@@ -44,6 +44,7 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
 
     private String orderTo, orderId;
     private RecyclerView OrderD_recycler;
+    private static final String TAG = "Noti";
 
 
     private ImageButton backBtn, review;

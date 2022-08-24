@@ -58,6 +58,7 @@ public class SettingsUserFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         //init sharedPreference
+
         sp = getActivity().getSharedPreferences("SETTINGS_SP", Context.MODE_PRIVATE);
 
         //checking last selected
@@ -111,6 +112,9 @@ public class SettingsUserFragment extends Fragment {
                         unMuteNoti.setVisibility(View.VISIBLE);
                         muteNoti.setVisibility(View.GONE);
                         noti_status.setText(enabledMessage);
+                        if (getActivity() == null) {
+                            return;
+                        }
                         Toast.makeText(getActivity(), ""+enabledMessage, Toast.LENGTH_SHORT).show();
 
 
@@ -119,6 +123,9 @@ public class SettingsUserFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //subscribe failed
+                        if (getActivity() == null) {
+                            return;
+                        }
                         Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -137,6 +144,9 @@ public class SettingsUserFragment extends Fragment {
                         unMuteNoti.setVisibility(View.GONE);
                         muteNoti.setVisibility(View.VISIBLE);
                         noti_status.setText(disabledMessage);
+                        if (getActivity() == null) {
+                            return;
+                        }
                         Toast.makeText(getActivity(), ""+disabledMessage, Toast.LENGTH_SHORT).show();
 
 
@@ -145,6 +155,9 @@ public class SettingsUserFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //unsubscribe Failed
+                        if (getActivity() == null) {
+                            return;
+                        }
                         Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

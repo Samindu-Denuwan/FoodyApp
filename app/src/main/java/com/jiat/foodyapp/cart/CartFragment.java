@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,15 +59,19 @@ import com.jiat.foodyapp.OrderDetailsUserActivity;
 import com.jiat.foodyapp.R;
 import com.jiat.foodyapp.adapter.CartAdapter;
 import com.jiat.foodyapp.adapter.CheckoutAdapter;
+import com.jiat.foodyapp.constants.Constants;
 import com.jiat.foodyapp.model.CartItem;
 import com.jiat.foodyapp.newCart.AppDatabase;
 import com.jiat.foodyapp.newCart.CartProduct;
 import com.jiat.foodyapp.newCart.ProductDao;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 import p32929.androideasysql_library.Column;
@@ -81,13 +92,14 @@ public class CartFragment extends Fragment implements LocationListener {
     private RecyclerView recyclerView;
     private ArrayList<CartItem> cartItems;
     private CartAdapter cartAdapter;
-    private static final String TAG = "owner";
+    /*private static final String TAG = "owner";*/
     public TextView countCart;
     private ProgressDialog progressDialog;
     private String[] locationPermissions;
     private LocationManager locationManager;
     private double latitude = 0.0, longitude =0.0;
     private static final int LOCATION_REQUEST_CODE = 100;
+    private static final String TAG = "Noti";
 
     private FirebaseDatabase firebaseDatabase;
     public TextView subTotalTv;
@@ -96,6 +108,7 @@ public class CartFragment extends Fragment implements LocationListener {
     private String uid, phone, address, MyLatitude, MyLongitude;
     private ImageView noCartImg;
     private TextView noCartTv;
+    private String shopUID;
 
 
 
@@ -112,6 +125,7 @@ public class CartFragment extends Fragment implements LocationListener {
 
         noCartTv.setVisibility(View.GONE);
         noCartImg.setVisibility(View.GONE);
+        shopUID = "d6RHVgGQoNZMkciEMVl16lSSsIw2";
 
 
 
@@ -226,6 +240,8 @@ public class CartFragment extends Fragment implements LocationListener {
         gps.setVisibility(View.GONE);
         noteCheckbox.setChecked(false);
         etNote.setEnabled(false);
+
+
 
 
         //load Personal Data
@@ -467,10 +483,10 @@ public class CartFragment extends Fragment implements LocationListener {
         progressDialog.show();
 
         //for order id and order time
-        String timestamp = ""+System.currentTimeMillis();
+        final String timestamp = ""+System.currentTimeMillis();
         String cost = TotalCheckout.getText().toString().trim().replace("LKR ", "");
 
-        String shopUID = "d6RHVgGQoNZMkciEMVl16lSSsIw2";
+
         //setup order data
         HashMap<String, String > hashMap = new HashMap<>();
         hashMap.put("orderId", ""+timestamp);
@@ -484,7 +500,7 @@ public class CartFragment extends Fragment implements LocationListener {
         hashMap.put("longitude", ""+MyLongitude);
 
         //add to db
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(shopUID).child("Orders");
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(shopUID).child("Orders");
         reference.child(timestamp).setValue(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -522,13 +538,10 @@ public class CartFragment extends Fragment implements LocationListener {
                         Toast.makeText(getActivity(), "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
                         noCartTv.setVisibility(View.VISIBLE);
                         noCartImg.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "Order Placed Successfully...");
+                        prepareNotificationMessage(timestamp);
 
 
-
-                        Intent intent = new Intent(getActivity(), OrderDetailsUserActivity.class);
-                        intent.putExtra("orderTo", shopUID);
-                        intent.putExtra("orderId", timestamp);
-                        getActivity().startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -670,12 +683,89 @@ public class CartFragment extends Fragment implements LocationListener {
         }
 
     }
+    
+    private void prepareNotificationMessage(String orderId){
+        //when user place order, send notification to seller
+        
+        //data for notification
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "New Order "+ orderId;
+        String NOTIFICATION_MESSAGE = "Hurry Up...! You Have a New Order";
+        String NOTIFICATION_TYPE = "NewOrder";
+        /*String NOTIFICATION_TYPE = "OrderPlaced";*/
+        
+        //JSON(what to send & where to
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        
+        try {
+            //send details
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("sellerUid", shopUID);
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+            
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);//to all subscribe
+            notificationJo.put("data", notificationBodyJo);
+            
+        }catch (Exception  e){
+            if (getActivity() == null) {
+                return;
+            }
+            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            
+        }
+        sendFcmNotification(notificationJo, orderId);
 
-    public void getCartCount() {
-        CartCounter cartCounter = new CartCounter(getActivity());
-        int count = cartCounter.cartCount();
-        countCart.setText(""+count);
+
     }
+
+    private void sendFcmNotification(JSONObject notificationJo, String orderId) {
+        //send volley request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //after send fcm start order details
+
+               // Toast.makeText(getActivity(), "Success "+response, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), OrderDetailsUserActivity.class);
+                intent.putExtra("orderTo", shopUID);
+                intent.putExtra("orderId", orderId);
+                getActivity().startActivity(intent);
+                Log.i(TAG, "Success FCM cus");
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+               // Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
+                //if failed send fcm, still start order details
+                Intent intent = new Intent(getActivity(), OrderDetailsUserActivity.class);
+                intent.putExtra("orderTo", shopUID);
+                intent.putExtra("orderId", orderId);
+                getActivity().startActivity(intent);
+                Log.i(TAG, "Error FCM cus");
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required header
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key= "+ Constants.FCM_KEY);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(getActivity()).add(jsonObjectRequest);
+
+
+    }
+
 
    /* private void loadCart() {
 

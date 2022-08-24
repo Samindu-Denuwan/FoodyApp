@@ -6,15 +6,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,13 +32,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jiat.foodyapp.adapter.AdapterUserOderDetails;
+import com.jiat.foodyapp.constants.Constants;
 import com.jiat.foodyapp.model.ModelOrderDetailsUser;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class OrderDetailsSellerActivity extends AppCompatActivity {
 
@@ -42,11 +54,13 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
     private TextView ORDER_ID, date, status, cusEmail, cuMobile, amount, address, itemCount;
     private ArrayList<ModelOrderDetailsUser>orderedArrayList;
     private AdapterUserOderDetails adapterUserOderDetails;
+    private static final String TAG = "Noti";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details_seller);
+
 
         orderId = getIntent().getStringExtra("orderId");
         orderBy = getIntent().getStringExtra("orderBy");
@@ -101,7 +115,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void editOrderStatus(String selectionOption) {
+    private void editOrderStatus(final String selectionOption) {
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("orderStatus", ""+selectionOption);
 
@@ -111,7 +125,10 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(OrderDetailsSellerActivity.this, "Order is now "+selectionOption, Toast.LENGTH_SHORT).show();
+                        String message = "Order is now "+selectionOption;
+                        Toast.makeText(OrderDetailsSellerActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        prepareNotificationMessage(orderId, message);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -252,6 +269,72 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void prepareNotificationMessage(String orderId, String message){
+        //when Seller change order status, in progress, completed, cancelled, send notification to user
+
+        //data for notification
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "Your Order "+ orderId;
+        String NOTIFICATION_MESSAGE = ""+ message;
+        String NOTIFICATION_TYPE = "OrderStatusChanged";
+
+        //JSON(what to send & where to
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+
+        try {
+            //send details
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", orderBy);
+            notificationBodyJo.put("sellerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);//to all subscribe
+            notificationJo.put("data", notificationBodyJo);
+
+        }catch (Exception  e){
+
+            Toast.makeText(OrderDetailsSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+        sendFcmNotification(notificationJo);
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        //send volley request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //send notification
+                Log.i(TAG, "Success send FCM Seller");
+               // Toast.makeText(OrderDetailsSellerActivity.this, "Success "+response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // failed
+              //  Toast.makeText(OrderDetailsSellerActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Failed send FCM Seller");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required header
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key="+ Constants.FCM_KEY);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+
+
     }
 
 }
