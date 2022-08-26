@@ -63,7 +63,8 @@ public class SplashActivity extends AppCompatActivity {
                                 startActivity(new Intent(SplashActivity.this, Seller_Navi_Activity.class));
                                 finish();
 
-                            }else {
+                            }
+                            else if(accountType.equals("User")){
 
                                 //user is buyer
                                 startActivity(new Intent(SplashActivity.this, UserNaviActivity.class));

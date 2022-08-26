@@ -31,6 +31,13 @@
             android:icon="@drawable/ic_user"
             android:iconTint="@color/gray"
             />
+
+        <item
+            android:id="@+id/menu_rider"
+            android:title="@string/riderManagement"
+            android:icon="@drawable/rider_icon"
+            android:iconTint="@color/gray"
+            />
         <item
             android:id="@+id/menu_settings"
             android:title="@string/settings"

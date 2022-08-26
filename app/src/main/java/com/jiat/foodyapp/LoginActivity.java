@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 Log.i(TAG, "Seller page loaded");
 
-                            }else {
+                            }else if(accountType.equals("User")){
                                 progressDialog.dismiss();
                                 //user is buyer
                                 startActivity(new Intent(LoginActivity.this, UserNaviActivity.class));

@@ -321,14 +321,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
-
         <ImageButton
             android:id="@+id/deliveryStatBtn"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:background="@drawable/redrose_rec"
             android:layout_gravity="center"
-            android:src="@drawable/ic_delivery_status"/>
+            android:src="@drawable/rider_icon"/>
+
+        <ImageButton
+            android:id="@+id/riderDetailsBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/redrose_rec"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_account_circle_24"/>
+
 
 
     </LinearLayout>

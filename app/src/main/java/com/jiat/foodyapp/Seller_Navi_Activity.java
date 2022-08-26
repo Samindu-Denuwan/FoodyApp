@@ -44,6 +44,7 @@ import com.jiat.foodyapp.seller.home.SellerHomeFragment;
 import com.jiat.foodyapp.seller.orders.SellerOrdersFragment;
 import com.jiat.foodyapp.seller.profile.SellerProfileFragment;
 import com.jiat.foodyapp.seller.promtionItem.PromotionFragment;
+import com.jiat.foodyapp.seller.riderManagement.RiderManagementFragment;
 import com.jiat.foodyapp.settings.SettingsUserFragment;
 
 import java.util.HashMap;
@@ -127,6 +128,12 @@ public class Seller_Navi_Activity extends AppCompatActivity {
                         fragment = new PromotionFragment();
                         loadFragment_side(fragment);
                         getSupportActionBar().setTitle("Promotions");
+                        break;
+
+                    case R.id.menu_rider:
+                        fragment = new RiderManagementFragment();
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Rider Management");
                         break;
 
                     case R.id.menu_profile_Seller:
