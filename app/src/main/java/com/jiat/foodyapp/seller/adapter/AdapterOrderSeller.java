@@ -85,6 +85,7 @@ public class AdapterOrderSeller extends RecyclerView.Adapter<AdapterOrderSeller.
                 Intent  intent = new Intent(context, OrderDetailsSellerActivity.class);
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("orderBy", orderBy);
+                intent.putExtra("orderTo", orderTo);
                 context.startActivity(intent);
             }
         });

@@ -63,7 +63,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
 
     String sourceLatitude, sourceLongitude, desti_Latitude, desti_Longitude;
     private FirebaseAuth firebaseAuth;
-    private String orderId, orderBy;
+    private String orderId, orderBy, orderTo;
     private RecyclerView OrderD_recycler;
     private ImageButton backBtn, deliveryStatusBtn, btnEdit, btnRiderInfo;
     private TextView ORDER_ID, date, status, cusEmail, cuMobile, amount, address, itemCount, RiderName;
@@ -85,6 +85,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
 
         orderId = getIntent().getStringExtra("orderId");
         orderBy = getIntent().getStringExtra("orderBy");
+        orderTo = getIntent().getStringExtra("orderTo");
 
 
         OrderD_recycler = findViewById(R.id.orderDetailsRecycler);
@@ -163,26 +164,6 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
     private String userFullName, phoneNumber, addressUser;
     private void riderInfoBottomSheet() {
 
-        EasyDB easyDB = EasyDB.init(this, "DELIVER_DB")
-                .setTableName("DELIVER_TABLE")
-                .addColumn(new Column("deliver_id", new String[]{"text", "unique"}))
-                .addColumn(new Column("rider_id", new String[]{"text", "not null"}))
-                .addColumn(new Column("rider_name", new String[]{"text", "not null"}))
-                .addColumn(new Column("rider_mobile", new String[]{"text", "not null"}))
-                .addColumn(new Column("rider_img", new String[]{"text", "not null"}))
-                .doneTableColumn();
-
-        //get all records from db
-        Cursor res = easyDB.getAllData();
-        while (res.moveToNext()) {
-            String deliverID = res.getString(1);
-            String riderId = res.getString(2);
-            String rider = res.getString(3);
-            String riderMobile = res.getString(4);
-            String riderImg = res.getString(5);
-            RIDER_ID = riderId;
-
-        }
 
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
             View view = LayoutInflater.from(this).inflate(R.layout.rider_profile_bottomsheet, null);
@@ -193,44 +174,60 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
             Email = view.findViewById(R.id.Email);
             Mobile= view.findViewById(R.id.PhoneNum);
 
-            //checkUser();
 
-            //load user info
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-            ref.orderByChild("uid").equalTo(RIDER_ID)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(orderTo).child("Orders");
+            reference.orderByChild("orderId").equalTo(orderId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            for (DataSnapshot ds: snapshot.getChildren()){
-                                String accountType = ""+ds.child("accountType").getValue();
-                                String name = ""+ds.child("name").getValue();
-                                String phone = ""+ds.child("phone").getValue();
-                                String address = ""+ds.child("address").getValue();
-                                String email = ""+ds.child("email").getValue();
-                                String timestamp = ""+ds.child("timestamp").getValue();
-                                String online = ""+ds.child("online").getValue();
-                                String profileImage = ""+ds.child("profileImage").getValue();
-                                String uid = ""+ds.child("uid").getValue();
+                    for(DataSnapshot ds: snapshot.getChildren()){
+                        String riderUid = ""+ds.child("rider").getValue();
 
-                                Email.setText(email);
-                                Name.setText(name);
-                                Mobile.setText(phone);
+                        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
+                        reference1.child(riderUid)
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot ds) {
+
+                                            String accountType = ""+ds.child("accountType").getValue();
+                                            String name = ""+ds.child("name").getValue();
+                                            String phone = ""+ds.child("phone").getValue();
+                                            String address = ""+ds.child("address").getValue();
+                                            String email = ""+ds.child("email").getValue();
+                                            String timestamp = ""+ds.child("timestamp").getValue();
+                                            String online = ""+ds.child("online").getValue();
+                                            String profileImage = ""+ds.child("profileImage").getValue();
+                                            String uid = ""+ds.child("uid").getValue();
+
+                                            Email.setText(email);
+                                            Name.setText(name);
+                                            Mobile.setText(phone);
 
 
-                                Glide.with(OrderDetailsSellerActivity.this)
-                                        .load(profileImage)
-                                        .circleCrop()
-                                        .into(imgProfileBtn);
+                                            Glide.with(OrderDetailsSellerActivity.this)
+                                                    .load(profileImage)
+                                                    .circleCrop()
+                                                    .into(imgProfileBtn);
 
-                            }
-                        }
+                                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(OrderDetailsSellerActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(OrderDetailsSellerActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+
         bottomSheetDialog.show();
 
     }
@@ -309,7 +306,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         }
 
         HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("orderStatus", ""+"On the way");
+        hashMap.put("orderStatus", ""+"Ready to Deliver");
         hashMap.put("rider", ""+RIDER_ID);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -318,7 +315,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        String message = "Order is now On the way";
+                        String message = "Order is now Ready to Deliver";
                         Toast.makeText(OrderDetailsSellerActivity.this, message, Toast.LENGTH_SHORT).show();
 
                         prepareNotificationMessage(orderId, message);
