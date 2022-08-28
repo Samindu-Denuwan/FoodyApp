@@ -161,7 +161,6 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
     private ImageView imgProfileBtn;
     private TextView Name, Mobile, Email;
 
-    private String userFullName, phoneNumber, addressUser;
     private void riderInfoBottomSheet() {
 
 

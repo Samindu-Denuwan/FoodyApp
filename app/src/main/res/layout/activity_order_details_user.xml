@@ -277,14 +277,43 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
 
+
+
+        <ImageButton
+            android:id="@+id/statusBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/redrose_rec"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_track"/>
+
+        <ImageButton
+            android:id="@+id/riderInfoBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/redrose_rec"
+            android:layout_gravity="center"
+            android:src="@drawable/rider_icon"/>
+
+        <ImageButton
+            android:id="@+id/MapBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/redrose_rec"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_map"/>
+
         <ImageButton
             android:id="@+id/reviewBtn"
             android:layout_width="50dp"
             android:layout_height="40dp"
+            android:layout_marginStart="30dp"
             android:background="@drawable/redrose_rec"
             android:layout_gravity="center"
             android:src="@drawable/ic_review"/>
-
 
     </LinearLayout>
 

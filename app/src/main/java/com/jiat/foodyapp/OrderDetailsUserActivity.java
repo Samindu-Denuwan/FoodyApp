@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -45,9 +46,10 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
     private String orderTo, orderId;
     private RecyclerView OrderD_recycler;
     private static final String TAG = "Noti";
+    private String riderUid;
 
 
-    private ImageButton backBtn, review;
+    private ImageButton backBtn, review, riderBtn, trackingStatusBtn, mapBtn;
     private TextView ORDER_ID, date, status, shopName, amount, address, itemCount;
 
     private FirebaseAuth firebaseAuth;
@@ -73,11 +75,17 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
         address = findViewById(R.id.addressTv);
         itemCount = findViewById(R.id.itemCountTv);
         review = findViewById(R.id.reviewBtn);
+        riderBtn = findViewById(R.id.riderInfoBtn);
+        mapBtn = findViewById(R.id.MapBtn);
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         loadShoppingInfo();
         loadOrderDetails();
         loadOrderedItems();
+
+        loadRiderInfo();
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +101,143 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
             }
         });
 
+        riderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.getText().equals("In Progress")||status.getText().equals("Completed")) {
+                    Toast.makeText(OrderDetailsUserActivity.this, "Rider Info Not Available yet...", Toast.LENGTH_SHORT).show();
+                }else if(status.getText().equals("Cancelled")){
+                    Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Cancelled...", Toast.LENGTH_SHORT).show();
+                }else{
+                    riderInfoBottomSheet();
+                }
+            }
+        });
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.getText().equals("In Progress")||status.getText().equals("Completed")) {
+                    Toast.makeText(OrderDetailsUserActivity.this, "Food Not Start to Deliver yet...", Toast.LENGTH_SHORT).show();
+                }else if(status.getText().equals("Cancelled")){
+                    Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Cancelled...", Toast.LENGTH_SHORT).show();
+                }else if(status.getText().equals("Delivered")){
+                    Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Delivered...", Toast.LENGTH_SHORT).show();
+                }else if(status.getText().equals("Rider Cancelled")){
+                    Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Cancelled by the Rider...", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(OrderDetailsUserActivity.this, TrackingOrderActivity.class);
+                    intent.putExtra("rider", riderUid);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+    }
+
+    private void loadRiderInfo() {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(orderTo).child("Orders");
+        reference.orderByChild("orderId").equalTo(orderId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    riderUid = "" + ds.child("rider").getValue();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(OrderDetailsUserActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private ImageView imgProfileBtn;
+    private ImageButton riderCallBtn;
+    private TextView Name, Mobile, Email;
+    private String RIDER_MOBILE;
+    private void riderInfoBottomSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.rider_user_bottomsheet, null);
+        bottomSheetDialog.setContentView(view);
+
+        imgProfileBtn = view.findViewById(R.id.imageViewUser);
+        Name =view.findViewById(R.id.FullName);
+        Email = view.findViewById(R.id.Email);
+        Mobile= view.findViewById(R.id.PhoneNum);
+        riderCallBtn = view.findViewById(R.id.callBtnRider);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(orderTo).child("Orders");
+        reference.orderByChild("orderId").equalTo(orderId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot ds: snapshot.getChildren()){
+                     riderUid = ""+ds.child("rider").getValue();
+
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
+                    reference1.child(riderUid)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot ds) {
+
+                                    String accountType = ""+ds.child("accountType").getValue();
+                                    String name = ""+ds.child("name").getValue();
+                                    RIDER_MOBILE = ""+ds.child("phone").getValue();
+                                    String address = ""+ds.child("address").getValue();
+                                    String email = ""+ds.child("email").getValue();
+                                    String timestamp = ""+ds.child("timestamp").getValue();
+                                    String online = ""+ds.child("online").getValue();
+                                    String profileImage = ""+ds.child("profileImage").getValue();
+                                    String uid = ""+ds.child("uid").getValue();
+
+                                    Email.setText(email);
+                                    Name.setText(name);
+                                    Mobile.setText(RIDER_MOBILE);
+
+
+                                    Glide.with(OrderDetailsUserActivity.this)
+                                            .load(profileImage)
+                                            .circleCrop()
+                                            .into(imgProfileBtn);
+
+                                }
+
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(OrderDetailsUserActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(OrderDetailsUserActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        riderCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialRider(RIDER_MOBILE, bottomSheetDialog);
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+    private void dialRider(String rider_mobile, BottomSheetDialog bottomSheetDialog) {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+Uri.encode(rider_mobile))));
+        bottomSheetDialog.dismiss();
+        Toast.makeText(this, "Calling To Rider", Toast.LENGTH_SHORT).show();
 
     }
 
