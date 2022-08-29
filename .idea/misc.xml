@@ -111,7 +111,7 @@
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_add_category.xml" value="0.18" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_add_item.xml" value="0.33" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_cart.xml" value="0.25" />
-        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_dash_img.xml" value="0.346875" />
+        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_dash_img.xml" value="0.1" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_favourite.xml" value="0.346875" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_food_item.xml" value="0.25" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_home.xml" value="0.346875" />
@@ -131,6 +131,7 @@
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/order_details_layout.xml" value="0.5" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/products_details_seller.xml" value="0.5777548918640577" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/review_bottom_sheet.xml" value="0.33" />
+        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/rider_bottomsheet.xml" value="0.346875" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/rider_layout.xml" value="0.9" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/rider_profile_bottomsheet.xml" value="0.24351050679851668" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/rider_user_bottomsheet.xml" value="0.1" />

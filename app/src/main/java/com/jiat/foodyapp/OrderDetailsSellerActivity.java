@@ -265,7 +265,8 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 riderList.clear();
                 for(DataSnapshot ds: snapshot.getChildren()){
                     String status = ""+ds.child("online").getValue();
-                    if(status.equals("true")) {
+                    String approve = ""+ds.child("registerStatus").getValue();
+                    if(status.equals("true") && approve.equals("true")) {
                         RiderModel riderModel = ds.getValue(RiderModel.class);
                         riderList.add(riderModel);
                     }

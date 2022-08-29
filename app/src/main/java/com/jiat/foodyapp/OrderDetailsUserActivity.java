@@ -46,7 +46,7 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
     private String orderTo, orderId;
     private RecyclerView OrderD_recycler;
     private static final String TAG = "Noti";
-    private String riderUid;
+    private String riderUid, riderName;
 
 
     private ImageButton backBtn, review, riderBtn, trackingStatusBtn, mapBtn;
@@ -87,6 +87,7 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
 
         loadRiderInfo();
 
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,9 +126,12 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
                     Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Delivered...", Toast.LENGTH_SHORT).show();
                 }else if(status.getText().equals("Rider Cancelled")){
                     Toast.makeText(OrderDetailsUserActivity.this, "Your Order is Cancelled by the Rider...", Toast.LENGTH_SHORT).show();
+                }else if(status.getText().equals("Ready to Deliver")){
+                    Toast.makeText(OrderDetailsUserActivity.this, "Food Not Start to Deliver yet...", Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(OrderDetailsUserActivity.this, TrackingOrderActivity.class);
                     intent.putExtra("rider", riderUid);
+                    intent.putExtra("name", riderName);
                     startActivity(intent);
                 }
             }
@@ -135,6 +139,8 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private void loadRiderInfo() {
 
@@ -146,6 +152,22 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     riderUid = "" + ds.child("rider").getValue();
 
+
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
+                    reference1.child(riderUid).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            riderName = ""+snapshot.child("name").getValue();
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(OrderDetailsUserActivity.this, ""+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
 
@@ -155,7 +177,11 @@ public class OrderDetailsUserActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
+
+
 
     private ImageView imgProfileBtn;
     private ImageButton riderCallBtn;

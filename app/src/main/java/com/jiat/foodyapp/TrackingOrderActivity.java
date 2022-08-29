@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
+import com.google.protobuf.DescriptorProtos;
 import com.jiat.foodyapp.databinding.ActivityTrackingOrderBinding;
 
 import org.json.JSONArray;
@@ -59,6 +60,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
     private String rider_Latitude, rider_Longitude, riderName, my_Latitude, my_Longitude;
     private Polyline polyline;
     public LatLng customerPosition = null, riderPosition = null;
+    private Double rider_lat, rider_longi;
 
 
     @Override
@@ -66,6 +68,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         super.onCreate(savedInstanceState);
 
         riderUid = getIntent().getStringExtra("rider");
+        riderName = getIntent().getStringExtra("name");
         /*Log.i(TAG, riderUid);*/
         binding = ActivityTrackingOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -75,49 +78,10 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-       // loadMyLocation();
-       // loadRiderLocation();
-    }
-
-    private void loadRiderLocation() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(riderUid)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        rider_Latitude = ""+snapshot.child("latitude").getValue();
-                        rider_Longitude = ""+snapshot.child("longitude").getValue();
-                        riderName = ""+snapshot.child("name").getValue();
-
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-
-    private void loadMyLocation() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        my_Latitude = ""+snapshot.child("latitude").getValue();
-                        my_Longitude = ""+snapshot.child("longitude").getValue();
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
     }
+
+
 
 
     @SuppressLint("MissingPermission")
@@ -143,6 +107,44 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
             );
         }
 
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
+        reference1.child(riderUid).child("Temp_Location")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        rider_Latitude = ""+snapshot.child("riderLat").getValue();
+                        rider_Longitude = ""+snapshot.child("riderLong").getValue();
+                        /*riderName = ""+snapshot.child("name").getValue();*/
+
+
+                        rider_lat = Double.parseDouble(rider_Latitude);
+                        rider_longi = Double.parseDouble(rider_Longitude);
+                        riderPosition = new LatLng(rider_lat, rider_longi);
+
+
+
+                        if(marker_rider == null){
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.m1));
+                            markerOptions.title("Rider: "+riderName);
+                            markerOptions.anchor((float) 0.5, (float) 0.5);
+                            markerOptions.position(riderPosition);
+                            marker_rider = mMap.addMarker(markerOptions);
+
+
+                        }else{
+                            marker_rider.setPosition(riderPosition);
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.child(firebaseAuth.getUid())
@@ -162,56 +164,27 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
                             markerOptions.title("You");
                             markerOptions.position(customerPosition);
+                            float result[] = new float[10];
+                            Location.distanceBetween( Cus_lat,Cus_longi, rider_lat, rider_longi , result );
+                            markerOptions.snippet("Distance: "+result[0]+"m");
                             marker_Customer = mMap.addMarker(markerOptions);
                             moveCamera(customerPosition);
 
                         }else{
                             marker_Customer.setPosition(customerPosition);
                         }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
-        reference1.child(riderUid)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        rider_Latitude = ""+snapshot.child("latitude").getValue();
-                        rider_Longitude = ""+snapshot.child("longitude").getValue();
-                        riderName = ""+snapshot.child("name").getValue();
-
-
-                         double rider_lat = Double.parseDouble(rider_Latitude);
-                         double rider_longi = Double.parseDouble(rider_Longitude);
-                         riderPosition = new LatLng(rider_lat, rider_longi);
-
-                        if(marker_rider == null){
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.m1));
-                            markerOptions.title("Rider: "+riderName);
-                            markerOptions.position(riderPosition);
-                            marker_rider = mMap.addMarker(markerOptions);
-
-
-                            }else{
-                             marker_rider.setPosition(riderPosition);
-                        }
-
                         getDirection(customerPosition, riderPosition);
-                        }
+
+                    }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
+
+
+
 
 
 
@@ -286,7 +259,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                             if(polyline == null){
                                 PolylineOptions polylineOptions = new PolylineOptions();
                                 polylineOptions.width(10);
-                                polylineOptions.color(getColor(R.color.orange));
+                                polylineOptions.color(getColor(R.color.black));
 
                                 polylineOptions.addAll(points);
                                 polyline = mMap.addPolyline(polylineOptions);
