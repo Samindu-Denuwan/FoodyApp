@@ -70,6 +70,8 @@ public class AdapterOrderSeller extends RecyclerView.Adapter<AdapterOrderSeller.
             holder.orderStatus.setTextColor(context.getResources().getColor(R.color.Green));
         }else if(orderStatus.equals("Cancelled")){
             holder.orderStatus.setTextColor(context.getResources().getColor(R.color.red));
+        }else{
+            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.orange));
         }
 
         //convert timestamp

@@ -148,7 +148,7 @@ public class ItemAdapterUpdate extends RecyclerView.Adapter<ItemAdapterUpdate.vi
 
                 itemDocumentId= item.getProductId();
                 String name = item.getItemName();
-                Toast.makeText(context, "ID : "+itemDocumentId+" "+name, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "ID : "+itemDocumentId+" "+name, Toast.LENGTH_SHORT).show();
                 detailsBottomSheet(item);
 
 

@@ -41,7 +41,8 @@
                     app:iss_auto_cycle="true"
                     app:iss_corner_radius="15"
                     app:iss_delay="3000"
-                    app:iss_period="2000" />
+                    app:iss_period="2000"
+                    />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

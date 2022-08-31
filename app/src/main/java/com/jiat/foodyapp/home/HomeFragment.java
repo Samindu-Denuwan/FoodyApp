@@ -14,7 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -45,6 +49,7 @@ public class HomeFragment extends Fragment implements AdapterCategories.Category
     FirebaseFirestore firestore;
     FirebaseStorage storage;
     public String selectCategory;
+    private ImageSlider imageSlider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +58,32 @@ public class HomeFragment extends Fragment implements AdapterCategories.Category
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         category_recyclerView = view.findViewById(R.id.category_recycler);
+        imageSlider = view.findViewById(R.id.image_slider);
+        firestore = FirebaseFirestore.getInstance();
+        loadSlider();
         return view;
+    }
+
+    private void loadSlider() {
+        ArrayList<SlideModel> slideModels = new ArrayList<>();
+        firestore.collection("Slider_Images").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                        slideModels.add(new SlideModel(documentSnapshot.getString("url"), ScaleTypes.FIT));
+                        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Can't Load Images...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     @Override

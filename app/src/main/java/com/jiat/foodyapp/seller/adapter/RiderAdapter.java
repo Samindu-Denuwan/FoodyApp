@@ -101,17 +101,20 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.viewHolderIt
         if (!riderRegisterStatus.equals("false")) {
             holder.active_Status.setVisibility(View.VISIBLE);
             holder.approve_Status.setVisibility(View.GONE);
+            holder.inactive_status.setVisibility(View.GONE);
             if(!riderStatus.equals("false")){
-                holder.active_Status.setText("Active");
-                holder.approve_Status.setTextColor(Color.GREEN);
+                holder.inactive_status.setVisibility(View.GONE);
+                holder.active_Status.setVisibility(View.VISIBLE);
+
             }else{
-                holder.active_Status.setText("Inactive");
-                holder.approve_Status.setTextColor(Color.RED);
+                holder.inactive_status.setVisibility(View.VISIBLE);
+                holder.active_Status.setVisibility(View.GONE);
             }
 
 
         } else {
             holder.active_Status.setVisibility(View.GONE);
+            holder.inactive_status.setVisibility(View.GONE);
             holder.approve_Status.setVisibility(View.VISIBLE);
             holder.approve_Status.setText("New Rider");
         }
@@ -244,7 +247,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.viewHolderIt
     class viewHolderItem extends RecyclerView.ViewHolder {
 
         private ImageView rider_Image;
-        private TextView rider_Name, rider_Mobile, approve_Status, active_Status;
+        private TextView rider_Name, rider_Mobile, approve_Status, active_Status, inactive_status;
 
         public viewHolderItem(@NonNull View itemView) {
             super(itemView);
@@ -255,6 +258,7 @@ public class RiderAdapter extends RecyclerView.Adapter<RiderAdapter.viewHolderIt
 
             approve_Status = itemView.findViewById(R.id.approveStatus);
             active_Status = itemView.findViewById(R.id.activeStatus);
+            inactive_status = itemView.findViewById(R.id.inActiveStatus);
 
         }
     }

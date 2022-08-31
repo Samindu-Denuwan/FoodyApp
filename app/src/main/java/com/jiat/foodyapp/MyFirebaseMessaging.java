@@ -72,6 +72,23 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                 Log.i(TAG, "Customer");
             }
         }
+        if(notificationType.equals("NewOrderRider")){
+            String buyerUid = remoteMessage.getData().get("buyerUid");
+            String sellerUid = remoteMessage.getData().get("sellerUid");
+            String riderUid = remoteMessage.getData().get("riderUid");
+            String orderId = remoteMessage.getData().get("orderId");
+            String notificationTitle = remoteMessage.getData().get("notificationTitle");
+            String notificationDescription = remoteMessage.getData().get("notificationMessage");
+
+            Log.i(TAG, "rider");
+          /*  if(firebaseUser != null && firebaseAuth.getUid().equals(riderUid)){
+                //user is signed in and same user to which notification sent
+              //  showNotification(orderId,riderUid, sellerUid, buyerUid,notificationTitle, notificationDescription, notificationType);
+
+            }*/
+
+
+        }
 
         //new add
      /*   if(notificationType.equals("OrderPlaced")){

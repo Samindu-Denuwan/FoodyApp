@@ -86,11 +86,13 @@ public class RiderAdapterOrder extends RecyclerView.Adapter<RiderAdapterOrder.vi
             holder.active_Status.setVisibility(View.VISIBLE);
             holder.approve_Status.setVisibility(View.GONE);
             if(!riderStatus.equals("false")){
-                holder.active_Status.setText("Active");
                 holder.approve_Status.setTextColor(Color.GREEN);
+                holder.active_Status.setText("Active");
+
             }else{
-                holder.active_Status.setText("Inactive");
                 holder.approve_Status.setTextColor(Color.RED);
+                holder.active_Status.setText("Inactive");
+
             }
 
 

@@ -83,7 +83,7 @@ public class DashImgFragment extends Fragment {
         firestore= FirebaseFirestore.getInstance();
 
 
-        ArrayList<SlideModel> slideModels = new ArrayList<>();
+
 
         /*slideModels.add(new SlideModel("https://icms-image.slatic.net/images/ims-web/5264c754-632f-47c8-8fdd-59eec28d61ad.jpg_1200x1200.jpg", ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/foody-1fe4d.appspot.com/o/profile_images%2FQzQCdKWienZ4PeDejxKQmO1RWVk2?alt=media&token=caafad5f-8bc6-4159-a88d-7a7d7d1ef28e", ScaleTypes.FIT));
@@ -92,6 +92,7 @@ public class DashImgFragment extends Fragment {
 
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);*/
 
+        ArrayList<SlideModel> slideModels = new ArrayList<>();
         firestore.collection("Slider_Images").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

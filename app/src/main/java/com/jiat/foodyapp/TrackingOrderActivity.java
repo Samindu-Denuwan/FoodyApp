@@ -7,8 +7,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,7 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
-import com.google.protobuf.DescriptorProtos;
 import com.jiat.foodyapp.databinding.ActivityTrackingOrderBinding;
 
 import org.json.JSONArray;
@@ -129,6 +128,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                             markerOptions.title("Rider: "+riderName);
                             markerOptions.anchor((float) 0.5, (float) 0.5);
                             markerOptions.position(riderPosition);
+
                             marker_rider = mMap.addMarker(markerOptions);
 
 
@@ -164,6 +164,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
                             markerOptions.title("You");
                             markerOptions.position(customerPosition);
+
                             float result[] = new float[10];
                             Location.distanceBetween( Cus_lat,Cus_longi, rider_lat, rider_longi , result );
                             markerOptions.snippet("Distance: "+result[0]+"m");
@@ -247,6 +248,9 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                     JSONObject route = routes.getJSONObject(0);
                     JSONObject overviewPolyline = route.getJSONObject("overview_polyline");
 
+
+
+
                     Log.i(TAG, overviewPolyline.toString());
 
                     List<LatLng> points = PolyUtil.decode((overviewPolyline.getString("points")));
@@ -260,8 +264,9 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                                 PolylineOptions polylineOptions = new PolylineOptions();
                                 polylineOptions.width(10);
                                 polylineOptions.color(getColor(R.color.black));
-
                                 polylineOptions.addAll(points);
+
+
                                 polyline = mMap.addPolyline(polylineOptions);
                             }else{
                                 polyline.setPoints(points);

@@ -395,19 +395,6 @@ public class CartFragment extends Fragment implements LocationListener {
         TotalCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-           /*     if (editSwitch.isChecked()) {
-                    if (etAddress.equals("") || etMobile.equals("")) {
-                        Toast.makeText(getActivity(), "Please Fill all fields...", Toast.LENGTH_SHORT).show();
-                    } else {
-                           // submitOrderWith();
-                    }
-                }else{
-                    //default details
-                    submitOrderWithout(bottomSheetDialog);
-
-                }*/
-
-               // Toast.makeText(getActivity(), ""+UserNote, Toast.LENGTH_SHORT).show();
 
 
                 submitOrderWithout(bottomSheetDialog);
@@ -420,63 +407,7 @@ public class CartFragment extends Fragment implements LocationListener {
         bottomSheetDialog.show();
     }
 
-    private void submitOrderWith() {
-        progressDialog.setMessage("Placing Order...");
-        progressDialog.show();
 
-        //for order id and order time
-        String timestamp = ""+System.currentTimeMillis();
-        String cost = TotalCheckout.getText().toString().trim().replace("LKR ", "");
-
-        //setup order data
-        HashMap<String, String > hashMap = new HashMap<>();
-        hashMap.put("orderId", ""+timestamp);
-        hashMap.put("orderTime", ""+timestamp);
-        hashMap.put("orderStatus", "In Progress");
-        hashMap.put("orderCost", ""+cost);
-        hashMap.put("orderBy", ""+firebaseAuth.getUid());
-        hashMap.put("orderTo", "d6RHVgGQoNZMkciEMVl16lSSsIw2");
-        hashMap.put("orderExtraNote", ""+UserNote);
-
-        //add to db
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child("Orders");
-        reference.child(timestamp).setValue(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        AppDatabase db = Room.databaseBuilder(getActivity(), AppDatabase.class, "cart_db")
-                                .allowMainThreadQueries().fallbackToDestructiveMigration().build();
-
-                        ProductDao productDao = db.ProductDao();
-
-                        List<CartProduct> cartProducts = productDao.getAllProduct();
-                        for (int i = 0; i <cartProducts.size() ; i++) {
-                            String pId = cartProducts.get(i).getProductID();
-                            String id = String.valueOf(cartProducts.get(i).getPrimaryId());
-                            String price = String.valueOf(cartProducts.get(i).getPrice());
-                            String name = cartProducts.get(i).getPname();
-                            String qnt = String.valueOf(cartProducts.get(i).getQnt());
-
-                            HashMap<String, String> hashMap1 = new HashMap<>();
-                            hashMap1.put("pId", pId);
-                            hashMap1.put("name", name);
-                            hashMap1.put("price", price);
-                            hashMap1.put("quantity", qnt);
-
-                            reference.child(timestamp).child("Items").child(pId).setValue(hashMap1);
-
-                        }
-                        progressDialog.dismiss();
-                        Toast.makeText(getActivity(), "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
     private void submitOrderWithout(BottomSheetDialog bottomSheetDialog) {
         progressDialog.setMessage("Placing Order...");

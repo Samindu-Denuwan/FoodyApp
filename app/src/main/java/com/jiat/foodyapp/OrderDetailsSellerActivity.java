@@ -317,8 +317,11 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         String message = "Order is now Ready to Deliver";
                         Toast.makeText(OrderDetailsSellerActivity.this, message, Toast.LENGTH_SHORT).show();
-
+                        String messageRider = "Hurry up... You have New Delivery!";
                         prepareNotificationMessage(orderId, message);
+                        prepareNotificationMessage1(orderId, messageRider, RIDER_ID);
+                        //Toast.makeText(OrderDetailsSellerActivity.this, ""+RIDER_ID, Toast.LENGTH_SHORT).show();
+
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -327,6 +330,72 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsSellerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+    }
+
+    private void prepareNotificationMessage1(String orderId, String messageRider,String riderId) {
+        //when Seller change order status, in progress, completed, cancelled, send notification to user
+
+        //data for notification
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "New Delivery "+ orderId;
+        String NOTIFICATION_MESSAGE = ""+ messageRider;
+        String NOTIFICATION_TYPE = "NewOrderRider";
+
+        //JSON(what to send & where to
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+
+        try {
+            //send details
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", orderBy);
+            notificationBodyJo.put("sellerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("riderUid", riderId);
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);//to all subscribe
+            notificationJo.put("data", notificationBodyJo);
+
+        }catch (Exception  e){
+
+            Toast.makeText(OrderDetailsSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+        sendFcmNotification1(notificationJo);
+    }
+
+    private void sendFcmNotification1(JSONObject notificationJo) {
+        //send volley request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //send notification
+                Log.i(TAG, "Success send FCM Seller to Rider");
+                // Toast.makeText(OrderDetailsSellerActivity.this, "Success "+response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // failed
+                //  Toast.makeText(OrderDetailsSellerActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Failed send FCM Seller to Rider");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required header
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key="+ Constants.FCM_KEY);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
 
     }
 

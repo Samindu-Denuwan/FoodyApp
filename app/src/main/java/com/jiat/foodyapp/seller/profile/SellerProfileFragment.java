@@ -55,6 +55,10 @@ import com.google.firebase.storage.UploadTask;
 import com.jiat.foodyapp.AddItemActivity;
 import com.jiat.foodyapp.R;
 import com.jiat.foodyapp.UserOrderActivity;
+import com.jiat.foodyapp.oders.OrderUserFragment;
+import com.jiat.foodyapp.seller.food_item.FoodItemFragment;
+import com.jiat.foodyapp.seller.orders.SellerOrdersFragment;
+import com.jiat.foodyapp.seller.riderManagement.RiderManagementFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +68,7 @@ public class SellerProfileFragment extends Fragment  implements LocationListener
 
     private ImageView profileImg;
     private TextView username, userMobile , address, mobileNumberView, emailView;
-    private ImageButton btnEdit, btnOrders, btnFav, btnCart;
+    private ImageButton btnEdit, btnOrders, btnRiders, btnFood;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -103,8 +107,8 @@ public class SellerProfileFragment extends Fragment  implements LocationListener
         userMobile = view.findViewById(R.id.phoneNumber);
         btnEdit = view.findViewById(R.id.editDetails);
         btnOrders = view.findViewById(R.id.ordersBtn);
-        btnFav = view.findViewById(R.id.FavBtn);
-        btnCart = view.findViewById(R.id.cartBtn);
+        btnRiders = view.findViewById(R.id.RiderBtn);
+        btnFood = view.findViewById(R.id.FoodBtn);
         address = view.findViewById(R.id.addressTv);
         mobileNumberView = view.findViewById(R.id.mobileTv);
         emailView = view.findViewById(R.id.emailTv);
@@ -116,34 +120,34 @@ public class SellerProfileFragment extends Fragment  implements LocationListener
         btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserOrderActivity.class);
-                startActivity(intent);
-                Toast.makeText(getActivity(), "Orders...", Toast.LENGTH_SHORT).show();
+                Fragment fragment =  new SellerOrdersFragment();
+                loadFragment(fragment);
             }
         });
 
         //favourite button shortcut
-        btnFav.setOnClickListener(new View.OnClickListener() {
+        btnRiders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Favourites...", Toast.LENGTH_SHORT).show();
+                Fragment fragment =  new RiderManagementFragment();
+                loadFragment(fragment);
             }
         });
 
 
         //cart button shortcut
-        btnCart.setOnClickListener(new View.OnClickListener() {
+        btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Shopping Cart...", Toast.LENGTH_SHORT).show();
+                Fragment fragment =  new FoodItemFragment();
+                loadFragment(fragment);
             }
         });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getActivity().getApplicationContext(), ProfileEditUserActivity.class);
-                // startActivity(intent);
+
                 bottomSheet();
 
             }
@@ -155,6 +159,17 @@ public class SellerProfileFragment extends Fragment  implements LocationListener
 
         return view;
     }
+    private void loadFragment(Fragment fragment) {
+
+        FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.containerSeller, fragment);
+        fragmentTransaction.commit();
+
+    }
+
+
+
 
     private ImageView imgProfileBtn;
     private ImageButton imgBtnGps, imgBtnBack;

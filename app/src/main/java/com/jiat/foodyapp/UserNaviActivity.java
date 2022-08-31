@@ -124,8 +124,7 @@ public class UserNaviActivity extends AppCompatActivity {
                         fragment = new OrderUserFragment();
                         loadFragment_side(fragment);
                         getSupportActionBar().setTitle("Orders");
-                        /*Intent intent = new Intent(UserNaviActivity.this, UserOrderActivity.class);
-                        startActivity(intent);*/
+
                         break;
 
                     case R.id.menu_profile:

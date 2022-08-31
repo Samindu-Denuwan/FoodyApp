@@ -62,6 +62,8 @@ import com.jiat.foodyapp.ProfileEditUserActivity;
 import com.jiat.foodyapp.R;
 import com.jiat.foodyapp.UserNaviActivity;
 import com.jiat.foodyapp.UserOrderActivity;
+import com.jiat.foodyapp.cart.CartFragment;
+import com.jiat.foodyapp.favourite.FavouriteFragment;
 import com.jiat.foodyapp.oders.OrderUserFragment;
 
 import java.util.HashMap;
@@ -124,14 +126,9 @@ public class ProfileFragment extends Fragment implements LocationListener {
         btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(getActivity(), UserOrderActivity.class);
-                startActivity(intent);
-                Toast.makeText(getActivity(), "Orders...", Toast.LENGTH_SHORT).show();*/
+
                 Fragment fragment =  new OrderUserFragment();
-                FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment);
-                fragmentTransaction.commit();
+                loadFragment(fragment);
             }
         });
 
@@ -139,7 +136,8 @@ public class ProfileFragment extends Fragment implements LocationListener {
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Favourites...", Toast.LENGTH_SHORT).show();
+                Fragment fragment =  new FavouriteFragment();
+                loadFragment(fragment);
             }
         });
 
@@ -148,7 +146,8 @@ public class ProfileFragment extends Fragment implements LocationListener {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Shopping Cart...", Toast.LENGTH_SHORT).show();
+                Fragment fragment =  new CartFragment();
+                loadFragment(fragment);
             }
         });
 
@@ -164,6 +163,16 @@ public class ProfileFragment extends Fragment implements LocationListener {
 
 
         return view;
+    }
+
+    private void loadFragment(Fragment fragment) {
+
+        FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
+
+
     }
 
 
