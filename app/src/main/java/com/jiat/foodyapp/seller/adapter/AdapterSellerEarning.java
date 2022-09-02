@@ -20,22 +20,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jiat.foodyapp.OrderDetailsSellerActivity;
 import com.jiat.foodyapp.R;
+import com.jiat.foodyapp.seller.filterOrder.FilterEarnSeller;
 import com.jiat.foodyapp.seller.filterOrder.FilterOrderSeller;
 import com.jiat.foodyapp.seller.model.ModelOrderSeller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AdapterOrderSeller extends RecyclerView.Adapter<AdapterOrderSeller.ViewHolderItem> implements Filterable {
+public class AdapterSellerEarning extends RecyclerView.Adapter<AdapterSellerEarning.ViewHolderItem> implements Filterable {
 
     private Context  context;
     public ArrayList<ModelOrderSeller> orderSellerArrayList, filterList;
-    private FilterOrderSeller filter;
+    private FilterEarnSeller filter;
+    TextView totalTv;
 
-    public AdapterOrderSeller(Context context, ArrayList<ModelOrderSeller> orderSellerArrayList) {
+    public AdapterSellerEarning(Context context, ArrayList<ModelOrderSeller> orderSellerArrayList, TextView totalTv) {
         this.context = context;
         this.orderSellerArrayList = orderSellerArrayList;
         this.filterList = orderSellerArrayList;
+        this.totalTv = totalTv;
     }
 
     @NonNull
@@ -58,23 +61,10 @@ public class AdapterOrderSeller extends RecyclerView.Adapter<AdapterOrderSeller.
 
         //load user info
         loadUserInfo(modelOrderSeller, holder);
-        
-        holder.orderAmount.setText("Amount: LKR "+ orderCost);
         holder.orderStatus.setText(orderStatus);
+        holder.orderAmount.setText("Amount: LKR "+ orderCost);
         holder.orderId.setText("Order ID: "+orderId);
 
-        //change order status text color
-        if(orderStatus.equals("In Progress")){
-            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.Blue));
-        }else if(orderStatus.equals("Completed")){
-            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.Green));
-        }else if(orderStatus.equals("Cancelled")||orderStatus.equals("Rider Cancelled")){
-            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.red));
-        }else if(orderStatus.equals("Delivered")){
-            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.purple_700));
-        }else{
-            holder.orderStatus.setTextColor(context.getResources().getColor(R.color.orange));
-        }
 
         //convert timestamp
         Calendar calendar = Calendar.getInstance();
@@ -120,7 +110,7 @@ public class AdapterOrderSeller extends RecyclerView.Adapter<AdapterOrderSeller.
     @Override
     public Filter getFilter() {
         if(filter == null){
-            filter = new FilterOrderSeller(this,filterList);
+           filter = new FilterEarnSeller(this, filterList, totalTv);
         }
         return filter;
     }

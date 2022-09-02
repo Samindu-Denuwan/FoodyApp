@@ -131,6 +131,7 @@ public class SellerProfileFragment extends Fragment  implements LocationListener
             public void onClick(View view) {
                 Fragment fragment =  new RiderManagementFragment();
                 loadFragment(fragment);
+
             }
         });
 

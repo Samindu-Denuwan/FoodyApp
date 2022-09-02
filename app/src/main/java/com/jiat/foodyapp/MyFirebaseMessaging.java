@@ -91,7 +91,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         }
 
         //new add
-     /*   if(notificationType.equals("OrderPlaced")){
+        if(notificationType.equals("OrderPlaced")){
             String buyerUid = remoteMessage.getData().get("buyerUid");
             String sellerUid = remoteMessage.getData().get("sellerUid");
             String orderId = remoteMessage.getData().get("orderId");
@@ -101,10 +101,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             if(firebaseUser != null && firebaseAuth.getUid().equals(buyerUid)){
                 //user is signed in and same user to which notification sent
                 showNotification(orderId, sellerUid, buyerUid,notificationTitle, notificationDescription, notificationType);
+                Log.i(TAG, "Customer Order placed");
             }
 
 
-        }*/
+        }
         //new add
 
     }
@@ -144,14 +145,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             Log.i(TAG, "Status changed to customer");
 
 
-        }/*else if(notificationType.equals("OrderPlaced")){
+        }else if(notificationType.equals("OrderPlaced")){
             //open OrderDetailsUser Activity
             intent = new Intent(this, OrderDetailsUserActivity.class);
             intent.putExtra("orderId", orderId);
             intent.putExtra("orderTo", sellerUid);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        }*/
+            Log.i(TAG, "Order Placed by customer");
+        }
 
 
 

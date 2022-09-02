@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -117,6 +118,7 @@ public class CartFragment extends Fragment implements LocationListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Cart");
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Please Wait");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -471,6 +473,7 @@ public class CartFragment extends Fragment implements LocationListener {
                         noCartImg.setVisibility(View.VISIBLE);
                         Log.i(TAG, "Order Placed Successfully...");
                         prepareNotificationMessage(timestamp);
+                        notifyOrderPlaced(timestamp);
 
 
                     }
@@ -483,6 +486,44 @@ public class CartFragment extends Fragment implements LocationListener {
                 });
 
 
+
+    }
+
+    private void notifyOrderPlaced(String orderId) {
+        //when user place order, send notification to seller
+
+        //data for notification
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "Your Order "+ orderId;
+        String NOTIFICATION_MESSAGE = "Order Placed Successfully..";
+        String NOTIFICATION_TYPE = "OrderPlaced";
+        /*String NOTIFICATION_TYPE = "OrderPlaced";*/
+
+        //JSON(what to send & where to
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+
+        try {
+            //send details
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("sellerUid", shopUID);
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);//to all subscribe
+            notificationJo.put("data", notificationBodyJo);
+
+        }catch (Exception  e){
+            if (getActivity() == null) {
+                return;
+            }
+            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+        sendFcmNotification(notificationJo, orderId);
 
     }
 
@@ -649,9 +690,39 @@ public class CartFragment extends Fragment implements LocationListener {
             Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             
         }
-        sendFcmNotification(notificationJo, orderId);
+        sendFcmNotification1(notificationJo);
 
 
+    }
+
+    private void sendFcmNotification1(JSONObject notificationJo) {
+        //send volley request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //send notification
+                Log.i(TAG, "Success send FCM Customer to customer");
+                // Toast.makeText(OrderDetailsSellerActivity.this, "Success "+response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // failed
+                //  Toast.makeText(OrderDetailsSellerActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Failed send FCM Customer to customer");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required header
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key="+ Constants.FCM_KEY);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(getActivity()).add(jsonObjectRequest);
     }
 
     private void sendFcmNotification(JSONObject notificationJo, String orderId) {

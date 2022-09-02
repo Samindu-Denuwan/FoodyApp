@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ public class SellerOrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_seller_orders, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Orders");
         FilterTv = view.findViewById(R.id.filterOrderTv);
         BtnFilter = view.findViewById(R.id.filterBtn);
         orderSellerRecycler = view.findViewById(R.id.order_recycler_seller);
@@ -60,7 +62,7 @@ public class SellerOrdersFragment extends Fragment {
         BtnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String[] options = {"All", "In Progress", "Completed", "Cancelled"};
+                final String[] options = {"All", "In Progress", "Completed", "Cancelled", "Ready to Deliver","On the way", "Delivered"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Filter Orders: ")
