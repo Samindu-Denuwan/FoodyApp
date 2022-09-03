@@ -129,12 +129,14 @@
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_rider_orders_dashboard.xml" value="0.33" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_search.xml" value="0.346875" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_seller_home.xml" value="0.312621359223301" />
-        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_seller_orders.xml" value="0.1" />
+        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_seller_orders.xml" value="0.25" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_seller_profile.xml" value="0.1" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/fragment_settings_user.xml" value="0.37245213094502777" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/load_category.xml" value="0.3458333333333333" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/navi_header_view.xml" value="0.2" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/order_details_layout.xml" value="0.5" />
+        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/piechartBottomSheet.xml" value="0.33559782608695654" />
+        <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/piechart_bottom_sheet.xml" value="0.3287292817679558" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/products_details_seller.xml" value="0.5777548918640577" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/ratings.xml" value="0.33" />
         <entry key="..\:/Foody App/FoodyApp/app/src/main/res/layout/review_bottom_sheet.xml" value="0.33" />

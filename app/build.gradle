@@ -13,6 +13,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -76,4 +77,9 @@ dependencies {
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation 'com.github.AnyChart:AnyChart-Android:0.0.3'
+    implementation("androidx.multidex:multidex:2.0.1")
+
+
 }

@@ -83,7 +83,22 @@ public class AdapterSellerEarning extends RecyclerView.Adapter<AdapterSellerEarn
                 context.startActivity(intent);
             }
         });
+
+       // updatePrice();
     }
+
+ /*   private void updatePrice() {
+        int sum = 0, i;
+        for (i = 0; i < orderSellerArrayList.size(); i++) {
+            //sum = Integer.parseInt(sum + (orderSellerArrayList.get(i).getOrderCost()));
+
+            int Sum = Integer.parseInt(orderSellerArrayList.get(i).getOrderCost());
+            sum = sum + Sum;
+            totalTv.setText("LKR " + sum);
+
+
+        }
+    }*/
 
     private void loadUserInfo(ModelOrderSeller modelOrderSeller, ViewHolderItem holder) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");

@@ -56,7 +56,7 @@ public class EarningsFragment extends Fragment {
         orderSellerArrayList = new ArrayList<>();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Orders")
+        reference.child(firebaseAuth.getUid()).child("Orders").orderByChild("orderStatus").equalTo("Delivered")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,8 +66,9 @@ public class EarningsFragment extends Fragment {
                             orderSellerArrayList.add(modelOrderSeller);
                         }
                         adapterSellerEarning = new AdapterSellerEarning(getActivity(), orderSellerArrayList, totalTv);
-                        adapterSellerEarning.getFilter().filter("Delivered");
+                       // adapterSellerEarning.getFilter().filter("Delivered");
                         recyclerView.setAdapter(adapterSellerEarning);
+                        updatePrice();
                     }
 
                     @Override
@@ -75,5 +76,17 @@ public class EarningsFragment extends Fragment {
 
                     }
                 });
+    }
+
+    private void updatePrice() {
+        double sum = 0;
+        int i;
+        for (i = 0; i < orderSellerArrayList.size(); i++) {
+            Double Sum = Double.parseDouble(orderSellerArrayList.get(i).getOrderCost());
+            sum = sum + Sum;
+            totalTv.setText("LKR " + sum);
+
+
+        }
     }
 }
