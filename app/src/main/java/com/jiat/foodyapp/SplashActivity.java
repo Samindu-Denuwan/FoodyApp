@@ -17,6 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SplashActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
+    private String ShopUid = null;
+    private String Open = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -43,6 +46,29 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         }, 3000);
+
+        ShopUid = "d6RHVgGQoNZMkciEMVl16lSSsIw2";
+        loadShopOpen();
+
+    }
+
+    private void loadShopOpen() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild("uid").equalTo(ShopUid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            Open = ""+ds.child("shopOpen").getValue();
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
     }
 
@@ -64,11 +90,16 @@ public class SplashActivity extends AppCompatActivity {
                                 finish();
 
                             }
-                            else if(accountType.equals("User")){
+                            else if(accountType.equals("User")) {
 
-                                //user is buyer
-                                startActivity(new Intent(SplashActivity.this, UserNaviActivity.class));
-                                finish();
+                                if (Open.equals("true")) {
+                                    //user is buyer
+                                    startActivity(new Intent(SplashActivity.this, UserNaviActivity.class));
+                                    finish();
+                                }else{
+                                    startActivity(new Intent(SplashActivity.this, ShopCloseActivity.class));
+                                    finish();
+                                }
                             }
                         }
                     }

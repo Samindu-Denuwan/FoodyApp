@@ -288,7 +288,7 @@ public class ItemAdapterUpdate extends RecyclerView.Adapter<ItemAdapterUpdate.vi
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Glide.with(context).load(uri).circleCrop()
+                        Glide.with(context).load(uri)
                                 .into(imgProduct);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

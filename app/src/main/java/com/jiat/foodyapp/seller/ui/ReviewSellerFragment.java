@@ -38,6 +38,7 @@ private RatingBar ratingBar;
 private FirebaseAuth firebaseAuth;
 private AdapterReview adapterReview;
 private ArrayList<ModelReview> reviewArrayList;
+private String ShopUid= null;
 
 
     public ReviewSellerFragment() {
@@ -57,8 +58,9 @@ private ArrayList<ModelReview> reviewArrayList;
         shopNameTv = view.findViewById(R.id.ShopName);
         ratingBar = view.findViewById(R.id.ratingBar);
         ratingTv = view.findViewById(R.id.ratingTv);
+        ShopUid = "d6RHVgGQoNZMkciEMVl16lSSsIw2";
 
-        firebaseAuth = FirebaseAuth.getInstance();
+       /* firebaseAuth = FirebaseAuth.getInstance();*/
 
         loadShopDetails();
         loadReview();
@@ -73,7 +75,7 @@ private ArrayList<ModelReview> reviewArrayList;
 
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+        reference.child(ShopUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -95,7 +97,7 @@ private ArrayList<ModelReview> reviewArrayList;
     private void loadReview() {
         reviewArrayList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Ratings").addValueEventListener(new ValueEventListener() {
+        reference.child(ShopUid).child("Ratings").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 

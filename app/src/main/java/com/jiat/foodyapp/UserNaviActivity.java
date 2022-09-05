@@ -39,6 +39,7 @@ import com.jiat.foodyapp.oders.OrderUserFragment;
 import com.jiat.foodyapp.profile.ProfileFragment;
 import com.jiat.foodyapp.search.SearchFragment;
 import com.jiat.foodyapp.settings.SettingsUserFragment;
+import com.jiat.foodyapp.shopInfo.ShopInfoFragment;
 
 import java.util.HashMap;
 
@@ -137,6 +138,12 @@ public class UserNaviActivity extends AppCompatActivity {
                         fragment = new SettingsUserFragment();
                         loadFragment_side(fragment);
                         getSupportActionBar().setTitle("Settings");
+                        break;
+
+                    case R.id.menu_info:
+                        fragment = new ShopInfoFragment();
+                        loadFragment_side(fragment);
+                        getSupportActionBar().setTitle("Shop Info");
                         break;
 
                     case R.id.menu_logout:

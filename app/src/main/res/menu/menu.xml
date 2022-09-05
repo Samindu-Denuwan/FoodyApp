@@ -38,6 +38,13 @@
             android:icon="@drawable/ic_baseline_settings_24"
             android:iconTint="@color/gray"
             />
+
+        <item
+            android:id="@+id/menu_info"
+            android:title="@string/info"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:iconTint="@color/gray"
+            />
     </group>
 
 

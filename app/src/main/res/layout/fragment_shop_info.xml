@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile.ProfileFragment"
-    android:background="@color/BackgroundColor">
+    tools:context=".shopInfo.ShopInfoFragment">
 
     <View
         android:layout_width="match_parent"
@@ -19,12 +17,11 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="My Profile"
+        android:text="Shop Info"
         android:textAllCaps="true"
         android:textColor="#040303"
         android:textSize="25dp"
         android:textStyle="bold" />
-
 
     <View
         android:layout_width="match_parent"
@@ -50,22 +47,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:text="My Profile"
+        android:text="Shop Profile"
         android:textAllCaps="true"
         android:textColor="#434342"
         android:textSize="25dp"
         android:textStyle="bold" />
-
-    <ImageButton
-        android:id="@+id/editDetails"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="175dp"
-        android:layout_marginEnd="70dp"
-        android:background="@drawable/half_redrose"
-        android:src="@drawable/ic_edit"
-        app:tint="@color/BackgroundColor" />
 
     <TextView
         android:id="@+id/phoneNumber"
@@ -73,11 +59,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        android:text="0761234567"
+        android:layout_marginTop="5dp"
+        android:text="10.00 a.m to 11.00 p.m"
         android:textAllCaps="true"
         android:textColor="@color/gray"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:textStyle="bold" />
 
 
@@ -99,28 +85,20 @@
         android:layout_centerHorizontal="true">
 
         <ImageButton
-            android:id="@+id/ordersBtn"
+            android:id="@+id/reviewBtn"
             android:layout_width="70dp"
             android:layout_height="45dp"
             android:background="@drawable/redrose_rec"
             android:layout_marginStart="0dp"
-            android:src="@drawable/ic_view_orders"/>
+            android:src="@drawable/ic_star"/>
 
         <ImageButton
-            android:id="@+id/FoodBtn"
+            android:id="@+id/callBtn"
             android:layout_width="70dp"
             android:layout_height="45dp"
             android:background="@drawable/redrose_rec"
             android:layout_marginStart="25dp"
-            android:src="@drawable/ic_food"/>
-
-        <ImageButton
-            android:id="@+id/RiderBtn"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:background="@drawable/redrose_rec"
-            android:layout_marginStart="25dp"
-            android:src="@drawable/rider_icon"/>
+            android:src="@drawable/ic_call"/>
 
 
     </LinearLayout>
@@ -261,6 +239,7 @@
 
 
     </RelativeLayout>
+
 
 
 

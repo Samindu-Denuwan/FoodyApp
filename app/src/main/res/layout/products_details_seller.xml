@@ -68,7 +68,7 @@
 
     </RelativeLayout>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/productImgView"
         android:layout_width="175dp"
         android:layout_height="175dp"
@@ -76,7 +76,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:background="@drawable/default_img"
-        android:padding="5dp" />
+         />
 
     <LinearLayout
         android:layout_width="match_parent"

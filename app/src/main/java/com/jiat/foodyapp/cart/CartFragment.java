@@ -2,8 +2,10 @@ package com.jiat.foodyapp.cart;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -58,6 +60,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.jiat.foodyapp.CartCounter;
 import com.jiat.foodyapp.OrderDetailsUserActivity;
 import com.jiat.foodyapp.R;
+import com.jiat.foodyapp.ShopCloseActivity;
+import com.jiat.foodyapp.SplashActivity;
+import com.jiat.foodyapp.UserNaviActivity;
 import com.jiat.foodyapp.adapter.CartAdapter;
 import com.jiat.foodyapp.adapter.CheckoutAdapter;
 import com.jiat.foodyapp.constants.Constants;
@@ -106,10 +111,13 @@ public class CartFragment extends Fragment implements LocationListener {
     public TextView subTotalTv;
     Button checkoutBtn;
     public double SUBTOTAl;
-    private String uid, phone, address, MyLatitude, MyLongitude;
+    private String uid, phone, address, MyLatitude, MyLongitude, shopLatitude, shopLongitude;
     private ImageView noCartImg;
     private TextView noCartTv;
-    private String shopUID;
+    private String shopUID, Open;
+    public float DISTANCE;
+
+
 
 
 
@@ -129,6 +137,7 @@ public class CartFragment extends Fragment implements LocationListener {
         noCartImg.setVisibility(View.GONE);
         shopUID = "d6RHVgGQoNZMkciEMVl16lSSsIw2";
 
+        loadShopOpen();
 
 
         /*if(subTotalTv.getText().equals("LKR "+0)){
@@ -178,19 +187,45 @@ public class CartFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View view) {
 
-                if (subTotalTv.getText().equals("LKR 0")) {
-                    Toast.makeText(getActivity(), "Please Add to Chart Items, You want to Check Out..", Toast.LENGTH_SHORT).show();
+                if (Open.equals("true")) {
+                    if (subTotalTv.getText().equals("LKR 0")) {
+                        Toast.makeText(getActivity(), "Please Add to Chart Items, You want to Check Out..", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Toast.makeText(getActivity(), " Check Out..", Toast.LENGTH_SHORT).show();
+                        checkout();
+                    }
 
-                } else {
-                   // Toast.makeText(getActivity(), " Check Out..", Toast.LENGTH_SHORT).show();
-
-                    checkout();
+                }else {
+                    startActivity(new Intent(getActivity(), ShopCloseActivity.class));
 
                 }
+
             }
         });
 
 
+
+    }
+
+    private void loadShopOpen() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild("uid").equalTo(shopUID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            Open = ""+ds.child("shopOpen").getValue();
+                            shopLatitude = ""+ds.child("latitude").getValue();
+                            shopLongitude = ""+ds.child("longitude").getValue();
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
     }
 
@@ -246,6 +281,8 @@ public class CartFragment extends Fragment implements LocationListener {
 
 
 
+
+
         //load Personal Data
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
@@ -272,6 +309,7 @@ public class CartFragment extends Fragment implements LocationListener {
                             tvAddress.setText(address);
                             tvMobile.setText(phone);
 
+                            checkDistance(bottomSheetDialog);
                         }
                     }
 
@@ -409,6 +447,37 @@ public class CartFragment extends Fragment implements LocationListener {
         bottomSheetDialog.show();
     }
 
+    private void checkDistance(BottomSheetDialog bottomSheetDialog) {
+        float[] results = new float[1];
+        double startLat = Double.parseDouble(shopLatitude);
+        double startLong = Double.parseDouble(shopLongitude);
+        double endLat = Double.parseDouble(MyLatitude);
+        double endLong = Double.parseDouble(MyLongitude);
+
+        Location.distanceBetween(startLat, startLong, endLat, endLong, results);
+        DISTANCE = results[0];
+       // Toast.makeText(getActivity(), ""+String.valueOf(distance), Toast.LENGTH_SHORT).show();
+
+        if(DISTANCE<= 5000){
+            TotalCheckout.setVisibility(View.VISIBLE);
+        }else{
+            TotalCheckout.setVisibility(View.INVISIBLE);
+            AlertDialog.Builder  builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Unable to Deliver")
+                    .setMessage("Sorry! We deliver around 5km Only..")
+                    .setCancelable(true)
+                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            bottomSheetDialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+
+
+
+    }
 
 
     private void submitOrderWithout(BottomSheetDialog bottomSheetDialog) {

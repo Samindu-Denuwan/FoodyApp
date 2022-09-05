@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,8 @@ import com.jiat.foodyapp.ItemUserViewActivity;
 import com.jiat.foodyapp.ModelCategories;
 import com.jiat.foodyapp.R;
 import com.jiat.foodyapp.ViewItemSellerActivity;
+import com.jiat.foodyapp.adapter.ItemAdapterUser;
+import com.jiat.foodyapp.model.Item;
 
 import java.util.ArrayList;
 
@@ -44,8 +47,12 @@ public class HomeFragment extends Fragment implements AdapterCategories.Category
 
     private ArrayList<ModelCategories> categories_m;
     private AdapterCategories adapterCategories;
+
+    public ArrayList<Item> items;
+    private ItemAdapterUser itemAdapterUser;
+
     private static final String TAG = "owner";
-    RecyclerView category_recyclerView;
+    RecyclerView category_recyclerView, itemRecycler;
     FirebaseFirestore firestore;
     FirebaseStorage storage;
     public String selectCategory;
@@ -58,10 +65,49 @@ public class HomeFragment extends Fragment implements AdapterCategories.Category
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         category_recyclerView = view.findViewById(R.id.category_recycler);
+        itemRecycler = view.findViewById(R.id.item_recycler);
         imageSlider = view.findViewById(R.id.image_slider);
         firestore = FirebaseFirestore.getInstance();
         loadSlider();
+        loadItems();
         return view;
+    }
+
+    private void loadItems() {
+        items = new ArrayList<>();
+        itemAdapterUser = new ItemAdapterUser(getActivity(), items, storage);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2,RecyclerView.VERTICAL, false );
+        itemRecycler.setLayoutManager(gridLayoutManager);
+        itemRecycler.setAdapter(itemAdapterUser);
+
+        firestore.collection("Products").orderBy("itemName").whereEqualTo("discountAvailable", "true").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                items.clear();
+                for(QueryDocumentSnapshot snapshot : task.getResult()){
+                    Item item = snapshot.toObject(Item.class);
+                    //item.setId(snapshot.getId());
+                    items.add(item);
+                }
+                itemAdapterUser.notifyDataSetChanged();
+            }
+        });
+
+        firestore.collection("Products").orderBy("itemName").whereEqualTo("discountAvailable", "true")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        items.clear();
+                        for (DocumentSnapshot snapshot : value.getDocuments()){
+                            Item item = snapshot.toObject(Item.class);
+                            items.add(item);
+                        }
+                        itemAdapterUser.notifyDataSetChanged();
+                    }
+
+                });
+
     }
 
     private void loadSlider() {

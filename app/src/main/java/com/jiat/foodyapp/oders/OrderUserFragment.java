@@ -2,6 +2,7 @@ package com.jiat.foodyapp.oders;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -55,10 +56,13 @@ public class OrderUserFragment extends Fragment {
         noOrderText = view.findViewById(R.id.noOrderTv);
         noOrderText.setVisibility(View.GONE);
         noOrderImage.setVisibility(View.GONE);
-
         loadOrders();
+
+
         return view;
     }
+
+
 
     private void loadOrders() {
         orderList = new ArrayList<>();

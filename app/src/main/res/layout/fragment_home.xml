@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeFragment"
-    android:background="@color/BackgroundColor">
+    tools:context=".home.HomeFragment">
 
-    <!--<ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">-->
+        android:orientation="vertical"
+        >
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/home" />
 
 
 
@@ -47,6 +50,14 @@
 
         </androidx.cardview.widget.CardView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/cardView2"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/back_rec_round"
+            />
+
         <TextView
             android:id="@+id/foodCategoryTv"
             android:layout_width="170dp"
@@ -57,24 +68,56 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="Food Category"
+            android:layout_below="@+id/cardView2"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_recycler"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodCategoryTv" />
+            android:layout_below="@+id/foodCategoryTv" />
+
+        <TextView
+            android:id="@+id/foodTv"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/category_recycler"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/half_round_rec"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="Weekly Dealz"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
 
-   <!-- </ScrollView>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:background="@color/BackgroundColor"
+            android:layout_below="@+id/foodTv"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+</ScrollView>

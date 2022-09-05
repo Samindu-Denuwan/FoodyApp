@@ -42,6 +42,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370302493691:android:1f110da0aa8e373286615e",
+        "android_client_info": {
+          "package_name": "com.jiat.rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "370302493691-7mhnp1fm04fs9gtphqcdqjejmkvg5pvc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyEyyVu9hzHVwzV7tAkLcPW65uC0t_1Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "370302493691-7mhnp1fm04fs9gtphqcdqjejmkvg5pvc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

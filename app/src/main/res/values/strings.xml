@@ -29,6 +29,8 @@
     <string name="riderManagement">Rider Management</string>
     <string name="title_activity_tracking_order">TrackingOrderActivity</string>
     <string name="direction_api_key">AIzaSyAzwj4dz0crCYxi_aeSq9lY8RkT4z55I2A</string>
+    <string name="info">Shop Info</string>
+    <string name="web_client_id">370302493691-7mhnp1fm04fs9gtphqcdqjejmkvg5pvc.apps.googleusercontent.com</string>
 
 
 </resources>
