@@ -1,4 +1,4 @@
-Foody app is developed by using Android. This app can log as seller or customer. 
+Foody app is developed by using Android. This app can logged in as seller or customer. 
 Customer can order food, add to cart, add to favourites and tracking order. 
 Seller can Add Foods , add categories. Rider app can change the delivery status and accept or decline delivery. 
 Project doumentation : <a href>https://github.com/Samindu-Denuwan/FoodyApp/blob/master/200001102556-%20HHDPII.pdf</a>
